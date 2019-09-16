@@ -1,4 +1,4 @@
-class Medecin{
+export class Medecin{
     //propriété
 id:number;
 name:string;

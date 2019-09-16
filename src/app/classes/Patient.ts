@@ -1,4 +1,4 @@
-class Patient {
+export class Patient {
     //proprietés
 identification:number;
 name:string;
