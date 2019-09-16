@@ -1,7 +1,8 @@
 class Patient {
     //proprietés
 identification:number;
-name:string;
+lastName:string;
+firstName:string;
 telephone:string;
 gender:string;
 naissance:string;
