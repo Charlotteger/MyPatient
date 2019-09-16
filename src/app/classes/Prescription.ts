@@ -1,0 +1,5 @@
+class prescription {
+    //propriété
+
+    //méthode
+}
