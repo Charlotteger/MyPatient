@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Patient } from 'src/app/classes/Patient';
+import { allergie } from './classes/Allergie';
+import { prescription } from './classes/Prescription';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +13,33 @@ import { Patient } from 'src/app/classes/Patient';
 export class AppComponent {
   title = 'my-patient';
   server = "https://fhir.eole-consulting.io/api/";
+  selecteur:number =0;
+  add:number=0;
+  prescriptionafficher:prescription;
+
+  constructor(private http: HttpClient) {}
+
+  button0():void{
+    this.selecteur=0;
+    this.add=0;
+  }
+  button1():void{
+    this.selecteur=1;
+  }
+  button2():void{
+    this.selecteur=2;
+  }
+  buttonadd():void{
+    if(this.add==0){
+      this.add=1
+    }
+    else{this.add=0}
+  }
+  afficher(p : prescription){
+    this.prescriptionafficher=p
+    this.selecteur=4;
+  }
+  
   patientTest:Patient = {
     identification:536,
     name:"Claire Estibal",
@@ -19,7 +48,15 @@ export class AppComponent {
     naissance:"le 3 janvier",
     adresse:"endroit random riviere"
   };
-  constructor(private http: HttpClient) {}
+  
+  listeAllergie:allergie[]=[
+    {name:"acariens"},{name:"sel"}
+  ]
+
+  listePrescription:prescription[]=[
+    {name:"prescription1" , medecin:"Mme Gerber" , tarif:"bien trop cher"},
+    {name:"prescription2" , medecin:"M Schwarz" , tarif:"Le juste prix"}
+  ]
 
   ngOnInit() {
     this.getPatient().then(result => {
@@ -38,4 +75,8 @@ export class AppComponent {
     console.error('An error occured', error);
     return Promise.reject(error.message || error);
   }
+
+
+
+
 }
