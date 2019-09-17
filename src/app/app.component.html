@@ -41,11 +41,21 @@
 </div>
 <div *ngIf="selecteur==2"><div>Allergies</div>
 <br>
-<p *ngFor="let allergie of listeAllergie">{{allergie.name}}</p>
-<button *ngIf="add==0 " (click)="buttonadd()">ajout allergie</button>
-<input *ngIf="add==1 ">
-<button *ngIf="add==1 " (click)="buttonadd()">confirmer</button>
+<table>
+<tr *ngFor="let allergie of listeAllergie"><td>{{allergie.name}}</td><td>{{allergie.symptome}}</td></tr>
+</table>
 <br>
+<button *ngIf="add==0 " (click)="buttonadd()">ajout allergie</button>
+<table *ngIf="add==1 ">
+
+  <tr ><td>substance</td><td>symptome</td></tr>
+  <tr><td><input id="subst" type="text" [(ngModel)]="subst"></td>
+    <td><input id="sympt" type="text" [(ngModel)]="sympt"></td></tr>
+    <tr><td *ngIf="errorSubst">veuillez renseigner la substance</td><td *ngIf="errorSympt">veuillez renseigner les symptomes</td></tr>
+</table>
+<br *ngIf="errorSubst!=1 || errorSympt!=1">
+<button *ngIf="add==1 " (click)="ajouterAllergie()">confirmer</button>
+<br *ngIf="add==1 ">
 </div>
 <div *ngIf="selecteur==4">
   <div>{{prescriptionafficher.name}}</div>
@@ -54,6 +64,7 @@
   <br>
   <button (click)="button1()">retour prescription</button>
 </div>
+<br>
 <button (click)="button0()" *ngIf="selecteur!=0">retour</button>
 <!--<pre>{{patientTest|json}}</pre>-->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->

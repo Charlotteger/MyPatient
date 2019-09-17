@@ -1,4 +1,5 @@
 export class allergie {
-    name:string
-    //propriété
+    name: string;
+    symptome: string;
+    // propriété
 }
