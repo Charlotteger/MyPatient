@@ -23,7 +23,8 @@ export class AppComponent {
   errorSubst = false;
   sympt = '';
   subst = '';
-
+  Id = '5d80aa2832364000151f8ad3';
+  newAllergie: allergie;
   patientTest: Patient = {
     identification: 536,
     name: 'Claire Estibal',
@@ -75,7 +76,12 @@ export class AppComponent {
     }
     if (!this.errorSympt && !this.errorSubst) {
       this.add = 0;
-      postAllergie(this.sympt, this.subst );
+      this.newAllergie = {
+        substance: this.sympt, manifestation: this.sympt, idPatient: this.Id
+      };
+      //postAllergie(newAllergie );
+      this.sympt = '' ;
+      this.subst = '' ;
      }
   }
 
@@ -89,11 +95,11 @@ export class AppComponent {
       this.patientTest.adresse = result.address[0].line + ' ' + result.address[0].postalCode + ' ' + result.address[0].city;
     });
 
-    this.listeAllergie.push(new allergie('poissons', 'boutons', this.patientTest.identification), new allergie('carottes', 'démangeaisons', this.patientTest.identification));
+    this.listeAllergie.push(new allergie('poissons', 'boutons', this.Id), new allergie('carottes', 'démangeaisons', this.Id));
   }
 
   private getPatient(): Promise<any> {
-    return this.http.get(this.server + 'patient/5d80aa2832364000151f8ad3').toPromise().catch(this.handleError);
+    return this.http.get(this.server + 'patient/' + this.Id).toPromise().catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {
@@ -102,7 +108,7 @@ export class AppComponent {
   }
 
   private postAllergie(newAllergie:allergie) {
-
+    
     //JSON.stringify({})
   }
 }
