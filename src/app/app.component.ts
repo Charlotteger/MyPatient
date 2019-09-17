@@ -3,6 +3,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Patient } from 'src/app/classes/Patient';
 import { allergie } from './classes/Allergie';
 import { prescription } from './classes/Prescription';
+import { isEmptyExpression } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,10 @@ export class AppComponent {
   selecteur = 0;
   add = 0;
   prescriptionafficher: prescription;
+  errorSympt = false;
+  errorSubst = false;
+  sympt = '';
+  subst = '';
 
   patientTest: Patient = {
     identification: 536,
@@ -47,13 +52,31 @@ export class AppComponent {
     this.selecteur = 2;
   }
   buttonadd(): void {
-    if (this.add == 0) {
+    if (this.add === 0) {
       this.add = 1;
     } else {this.add = 0; }
   }
   afficher(p: prescription) {
     this.prescriptionafficher = p;
     this.selecteur = 4;
+  }
+  ajouterAllergie() {
+    console.log(this.sympt);
+    console.log(this.subst);
+    if (this.subst === '') {
+      this.errorSubst = true;
+    } else {
+      this.errorSubst = false;
+    }
+    if (this.sympt === '') {
+      this.errorSympt = true;
+    } else {
+      this.errorSympt = false;
+    }
+    if (!this.errorSympt && !this.errorSubst) {
+      this.add = 0;
+      postAllergie(this.sympt, this.subst );
+     }
   }
 
   ngOnInit() {
