@@ -21,9 +21,9 @@
 </div>
 <br>
 <div *ngIf="selecteur==0">
-<div>Bienvenue </div>
+<div>Bienvenue sur votre espace personel</div>
 <br>
-<div>informations :</div>
+<div>informations personnelles :</div>
 <table>
   <tr><td>Nom</td><td>{{patienttest.name}}</td></tr>
   <tr><td>Sexe</td><td>{{patienttest.gender}}</td></tr>
@@ -53,7 +53,7 @@
   <br>
   <button (click)="button1()">retour prescription</button>
 </div>
-<button (click)="button0()">retour</button>
+<button (click)="button0()" *ngIf="selecteur!=0">retour</button>
 <!--<pre>{{patienttest|json}}</pre>-->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
