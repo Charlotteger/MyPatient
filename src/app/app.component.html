@@ -20,7 +20,8 @@
   </svg>
 </div>
 <br>
-<div>Bienvenue {{selecteur}}</div>
+<div *ngIf="selecteur==0">
+<div>Bienvenue </div>
 <br>
 <div>informations :</div>
 <table>
@@ -30,7 +31,29 @@
   <tr><td>adresse</td><td>{{patienttest.adresse}}</td></tr>
 </table>
 
-<table><tr><td><p (click)="button1">bouton 1</p></td><td><p (click)="button2">bouton 2</p></td></tr></table>
+<table><tr><td><div (click)="button1()">bouton 1</div></td><td><div (click)="button2()">bouton 2</div></td></tr></table>
+</div>
+<div *ngIf="selecteur==1"><div>Prescription</div>
+<br>
+<p *ngFor="let p of listeprescription" (click)="afficher(p)">{{p.name}}</p>
+<br>
+</div>
+<div *ngIf="selecteur==2"><div>Allergies</div>
+<br>
+<p *ngFor="let allergie of listeallergie">{{allergie.name}}</p>
+<button *ngIf="add==0 " (click)="buttonadd()">ajout allergie</button>
+<input *ngIf="add==1 ">
+<button *ngIf="add==1 " (click)="buttonadd()">confirmer</button>
+<br>
+</div>
+<div *ngIf="selecteur==4">
+  <div>{{prescriptionafficher.name}}</div>
+  <div>{{prescriptionafficher.medecin}}</div>
+  <div>{{prescriptionafficher.tarif}}</div>
+  <br>
+  <button (click)="button1()">retour prescription</button>
+</div>
+<button (click)="button0()">retour</button>
 <!--<pre>{{patienttest|json}}</pre>-->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->

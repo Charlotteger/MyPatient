@@ -1,4 +1,6 @@
 export class prescription {
-    //propriété
+    name:string;
+    medecin:string;
+    tarif:string//propriété
 
 }
