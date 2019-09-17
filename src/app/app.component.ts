@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { Patient } from 'src/app/classes/Patient';
 
 @Component({
   selector: 'app-root',
@@ -11,5 +12,12 @@ export class AppComponent {
   title = 'my-patient';
   constructor(private http: HttpClient) {}
 
-  
+  patienttest:Patient = {
+    identification:536,
+    name:"Claire Estibal",
+    telephone:"0643197104",
+    gender:"nonbinaire",
+    naissance:"le 3 janvier",
+    adresse:"endroit random riviere"
+  };
 }

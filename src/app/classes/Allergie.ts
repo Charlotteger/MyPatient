@@ -1,5 +1,3 @@
-class allergie {
+export class allergie {
     //propriété
-
-    //méthode
 }

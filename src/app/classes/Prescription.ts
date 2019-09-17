@@ -1,5 +1,4 @@
-class prescription {
+export class prescription {
     //propriété
 
-    //méthode
 }
