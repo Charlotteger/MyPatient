@@ -11,72 +11,75 @@ import { prescription } from './classes/Prescription';
 })
 
 export class AppComponent {
-  title = 'my-patient';
-  server = "https://fhir.eole-consulting.io/api/";
-  selecteur:number =0;
-  add:number=0;
-  prescriptionafficher:prescription;
 
   constructor(private http: HttpClient) {}
+  title = 'my-patient';
+  server = 'https://fhir.eole-consulting.io/api/';
+  selecteur = 0;
+  add = 0;
+  prescriptionafficher: prescription;
 
-  button0():void{
-    this.selecteur=0;
-    this.add=0;
-  }
-  button1():void{
-    this.selecteur=1;
-  }
-  button2():void{
-    this.selecteur=2;
-  }
-  buttonadd():void{
-    if(this.add==0){
-      this.add=1
-    }
-    else{this.add=0}
-  }
-  afficher(p : prescription){
-    this.prescriptionafficher=p
-    this.selecteur=4;
-  }
-  
-  patientTest:Patient = {
-    identification:536,
-    name:"Claire Estibal",
-    telephone:"0643197104",
-    gender:"nonbinaire",
-    naissance:"le 3 janvier",
-    adresse:"endroit random riviere"
+  patientTest: Patient = {
+    identification: 536,
+    name: 'Claire Estibal',
+    telephone: '0643197104',
+    gender: 'nonbinaire',
+    naissance: new Date(),
+    adresse: 'endroit random riviere'
   };
-  
-  listeAllergie:allergie[]=[
-    {name:"acariens"},{name:"sel"}
-  ]
 
-  listePrescription:prescription[]=[
-    {name:"prescription1" , medecin:"Mme Gerber" , tarif:"bien trop cher"},
-    {name:"prescription2" , medecin:"M Schwarz" , tarif:"Le juste prix"}
-  ]
+  listeAllergie: allergie[] = [
+  ];
+
+  listePrescription: prescription[] = [
+    {name: 'prescription1' , medecin: 'Mme Gerber' , tarif: 'bien trop cher'},
+    {name: 'prescription2' , medecin: 'M Schwarz' , tarif: 'Le juste prix'}
+  ];
+
+  button0(): void {
+    this.selecteur = 0;
+    this.add = 0;
+  }
+  button1(): void {
+    this.selecteur = 1;
+  }
+  button2(): void {
+    this.selecteur = 2;
+  }
+  buttonadd(): void {
+    if (this.add == 0) {
+      this.add = 1;
+    } else {this.add = 0; }
+  }
+  afficher(p: prescription) {
+    this.prescriptionafficher = p;
+    this.selecteur = 4;
+  }
 
   ngOnInit() {
     this.getPatient().then(result => {
-      console.log(result);  
-      for(var prop in result){
-        console.log(prop);
-      } 
-    })
+      console.log(result);
+      this.patientTest.gender = result.gender;
+      this.patientTest.name = result.name[0].given + ' ' + result.name[0].family;
+      this.patientTest.naissance = new Date(result.birthDate); // require('dateformat')(
+      this.patientTest.identification = result.id;
+      this.patientTest.adresse = result.address[0].line + ' ' + result.address[0].postalCode + ' ' + result.address[0].city;
+    });
+
+    this.listeAllergie.push(new allergie('poissons', 'boutons', this.patientTest.identification), new allergie('carottes', 'démangeaisons', this.patientTest.identification));
   }
 
   private getPatient(): Promise<any> {
-    return this.http.get(this.server + "patient/5d80aa2832364000151f8ad3").toPromise().catch(this.handleError);
+    return this.http.get(this.server + 'patient/5d80aa2832364000151f8ad3').toPromise().catch(this.handleError);
   }
 
-  private handleError(error : any): Promise<any> {
+  private handleError(error: any): Promise<any> {
     console.error('An error occured', error);
     return Promise.reject(error.message || error);
   }
 
+  private postAllergie(newAllergie:allergie) {
 
-
-
+    //JSON.stringify({})
+  }
 }
