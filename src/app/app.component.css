@@ -369,11 +369,12 @@ h1
           margin-right: auto;
           font-size: larger;
           vertical-align: middle;
-        margin-bottom: 5%;}
+        margin-bottom: 5%;
+      }
 
 #sousTitre{font-size: 180%;
 text-align: center;
-margin-bottom: 5%;}
+margin-bottom: 4%;}
 
 #messageAccueil{font-size: 240%;
   text-align: center;}

@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
   errorSubst = false;
   sympt = '';
   subst = '';
+  dateFormat = '';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
@@ -49,9 +50,11 @@ export class AppComponent implements OnInit {
   }
   button1(): void {
     this.selecteur = 1;
+    this.getPrescription();
   }
   button2(): void {
     this.selecteur = 2;
+    this.getAllergies();
   }
   buttonadd(): void {
     if (this.add === 0) {
@@ -78,7 +81,7 @@ export class AppComponent implements OnInit {
     if (!this.errorSympt && !this.errorSubst) {
       this.add = 0;
       this.newAllergie = {
-        substance: this.sympt, manifestation: this.sympt, idPatient: this.Id
+        substance: this.subst, manifestation: this.sympt, idPatient: this.Id
       };
       this.postAllergie(this.newAllergie);
       this.sympt = '' ;
@@ -86,16 +89,34 @@ export class AppComponent implements OnInit {
      }
   }
 
-  ngOnInit() {
+  getPrescription() {
+
+  }
+
+  getAllergies(){
+
+  }
+  
+  initialisationPatient() {
     this.getPatient().then(result => {
-      this.patientTest = {
-        gender: result.gender,
-        name: result.name[0].given + ' ' + result.name[0].family,
-        naissance: new Date(result.birthDate), // require('dateformat'),
-        identification: result.id,
-        adresse: result.address[0].line + ' ' + result.address[0].postalCode + ' ' + result.address[0].city,
-      };
+      console.log(result);
+      this.patientTest.gender = result.gender;
+      this.patientTest.name = result.name[0].given + ' ' + result.name[0].family;
+      this.patientTest.naissance = new Date(result.birthDate);
+      this.dateFormat = this.patientTest.naissance.toString().slice(0, 15);
+      this.patientTest.identification = result.id;
+      this.patientTest.adresse = result.address[0].line + ' ' + result.address[0].postalCode + ' ' + result.address[0].city;
     });
+ }
+
+  initialisationListeAllergie() {
+    this.listeAllergie.push(new allergie('poissons', 'boutons', this.Id), new allergie('carottes', 'démangeaisons', this.Id));
+  }
+
+  ngOnInit() {
+    this.initialisationPatient();
+    this.initialisationListeAllergie();
+    console.log("teeeeeeeest" + this.patientTest);
   }
 
   private getPatient(): Promise<any> {
