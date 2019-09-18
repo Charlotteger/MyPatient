@@ -21,24 +21,32 @@
 </div>
 <!--<pre>{{patientTest|json}}</pre> -->
 <br>
+
+
 <div *ngIf="selecteur==0">
 <div id='messageAccueil'>Bienvenue sur votre espace personel</div>
 <br>
 <div id='sousTitre'>Vos informations personnelles :</div>
-<table id='dataTable' width:1000>
-  <tr><td width:400>Nom</td><td width:600>{{patientTest.name}}</td></tr>
+<table id='dataTable' cellpadding=10px>
+  <tr><td>Nom</td><td>{{patientTest.name}}</td></tr>
   <tr><td>Sexe</td><td>{{patientTest.gender}}</td></tr>
-  <tr><td>Date de naissance</td><td>{{patientTest.naissance}}</td></tr>
-  <tr><td>adresse</td><td>{{patientTest.adresse}}</td></tr>
+  <tr><td>Date de naissance</td><td>{{dateFormat}}</td></tr>
+  <tr><td>Adresse</td><td>{{patientTest.adresse}}</td></tr>
 </table>
 
 <div id='boutons'><div (click)="button1()" class='boutontab' id='boutontab1'>Prescription</div><div (click)="button2()" class='boutontab'>Allergie</div></div>
 </div>
+
+
+
 <div *ngIf="selecteur==1"><div id='sousTitre'>Prescription</div>
 <br>
 <p *ngFor="let p of listePrescription" (click)="afficher(p)">{{p.name}}</p>
 <br>
 </div>
+
+
+
 <div *ngIf="selecteur==2"><div id='sousTitre'>Allergies</div>
 <br>
 <table id='dataTable'>
@@ -57,6 +65,9 @@
 <p *ngIf="add==1 " (click)="ajouterAllergie()" id='bouton'>confirmer</p>
 <br *ngIf="add==1 ">
 </div>
+
+
+
 <div *ngIf="selecteur==4">
   <div>{{prescriptionafficher.name}}</div>
   <div>{{prescriptionafficher.medecin}}</div>
