@@ -14,7 +14,7 @@ import { isEmptyExpression } from '@angular/compiler';
 export class AppComponent implements OnInit {
 
   constructor(private http: HttpClient) { }
-  dateFormat = '';
+  
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
@@ -47,11 +47,13 @@ export class AppComponent implements OnInit {
     this.selecteur = 0;
     this.add = 0;
   }
-  button1(): void {
+  Prescription(): void {
     this.selecteur = 1;
+    this.initialiserPrescription();
   }
-  button2(): void {
+  Allergies(): void {
     this.selecteur = 2;
+    this.initialiserAllergie();
   }
   buttonadd(): void {
     if (this.add === 0) {
@@ -86,17 +88,24 @@ export class AppComponent implements OnInit {
      }
   }
 
-  ngOnInit() {
+  initialiserPatient(){
     this.getPatient().then(result => {
       this.patientTest = {
         gender: result.gender,
         name: result.name[0].given + ' ' + result.name[0].family,
-        naissance: new Date(result.birthDate), // require('dateformat'), // require('dateformat')(
+        naissance: (new Date(result.birthDate)).toString().slice(0, 15), // require('dateformat')
         identification: result.id,
         adresse: result.address[0].line + ' ' + result.address[0].postalCode + ' ' + result.address[0].city,
       };
     });
-    this.dateFormat = this.patientTest.naissance.toString().slice(0, 15);
+  }
+
+  initialiserAllergie(){}
+
+  initialiserPrescription(){}
+
+  ngOnInit() {
+    this.initialiserPatient();
   }
 
   private getPatient(): Promise<any> {
