@@ -4,7 +4,7 @@ export class Patient {
     name: string;
     // telephone: string;
     gender: string;
-    naissance: Date;
+    naissance: string;
     adresse: string;
 }
 
