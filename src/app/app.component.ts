@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Patient } from 'src/app/classes/Patient';
 import { allergie } from './classes/Allergie';
 import { prescription } from './classes/Prescription';
@@ -11,9 +11,10 @@ import { isEmptyExpression } from '@angular/compiler';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
+
   title = 'my-patient';
   server = 'https://fhir.eole-consulting.io/api/';
   selecteur = 0;
@@ -24,23 +25,23 @@ export class AppComponent {
   sympt = '';
   subst = '';
   dateFormat = '';
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': 'mon-jeton'
+    })
+  };
+
+  patientTest: Patient;
   Id = '5d80aa2832364000151f8ad3';
   newAllergie: allergie;
-  patientTest: Patient = {
-    identification: 536,
-    name: 'Claire Estibal',
-    telephone: '0643197104',
-    gender: 'nonbinaire',
-    naissance: new Date(),
-    adresse: 'endroit random riviere'
-  };
 
   listeAllergie: allergie[] = [
   ];
 
   listePrescription: prescription[] = [
-    {name: 'prescription1' , medecin: 'Mme Gerber' , tarif: 'bien trop cher'},
-    {name: 'prescription2' , medecin: 'M Schwarz' , tarif: 'Le juste prix'}
+    { name: 'prescription1', medecin: 'Mme Gerber', tarif: 'bien trop cher' },
+    { name: 'prescription2', medecin: 'M Schwarz', tarif: 'Le juste prix' }
   ];
 
   button0(): void {
@@ -58,15 +59,15 @@ export class AppComponent {
   buttonadd(): void {
     if (this.add === 0) {
       this.add = 1;
-    } else {this.add = 0; }
+    } else { this.add = 0; }
   }
   afficher(p: prescription) {
     this.prescriptionafficher = p;
     this.selecteur = 4;
   }
   ajouterAllergie() {
-    console.log(this.sympt);
-    console.log(this.subst);
+    //console.log(this.sympt);
+    //console.log(this.subst);
     if (this.subst === '') {
       this.errorSubst = true;
     } else {
@@ -80,9 +81,9 @@ export class AppComponent {
     if (!this.errorSympt && !this.errorSubst) {
       this.add = 0;
       this.newAllergie = {
-        substance: this.sympt, manifestation: this.sympt, idPatient: this.Id
+        substance: this.subst, manifestation: this.sympt, idPatient: this.Id
       };
-      //postAllergie(newAllergie );
+      this.postAllergie(this.newAllergie);
       this.sympt = '' ;
       this.subst = '' ;
      }
@@ -125,8 +126,41 @@ export class AppComponent {
     return Promise.reject(error.message || error);
   }
 
-  private postAllergie(newAllergie:allergie) {
-    
-    //JSON.stringify({})
+  private postAllergie(newAllergie: allergie) {
+    if (newAllergie != null) {
+      var obj = JSON.stringify({
+        "resourceType": "AllergyIntolerance",
+        "reaction": [
+          {
+            "substance": {
+              "coding": [
+                {
+                  "system": "https://fr.wikipedia.org",
+                  "code": "1000" + Math.floor(Math.random() * 1000),
+                  "display": newAllergie.substance
+                }
+              ]
+            },
+            "manifestation": [
+              {
+                "coding": [
+                  {
+                    "system": "https://fr.wikipedia.org",
+                    "code": "1000" + Math.floor(Math.random() * 1000),
+                    "display": newAllergie.manifestation
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "patient": {
+          "reference": newAllergie.idPatient
+        }
+      });
+      console.log(obj);
+      this.http.post(this.server + "allergy-intolerance", obj, this.httpOptions).toPromise().catch(this.handleError);
+    }
   }
 }
+
