@@ -14,7 +14,13 @@ import { isEmptyExpression } from '@angular/compiler';
 export class AppComponent implements OnInit {
 
   constructor(private http: HttpClient) { }
-
+  dateFormat = '';
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': 'mon-jeton'
+    })
+  };
   title = 'my-patient';
   server = 'https://fhir.eole-consulting.io/api/';
   selecteur = 0;
@@ -24,13 +30,6 @@ export class AppComponent implements OnInit {
   errorSubst = false;
   sympt = '';
   subst = '';
-  dateFormat = '';
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': 'mon-jeton'
-    })
-  };
 
   patientTest: Patient;
   Id = '5d80aa2832364000151f8ad3';
@@ -50,11 +49,9 @@ export class AppComponent implements OnInit {
   }
   button1(): void {
     this.selecteur = 1;
-    this.getPrescription();
   }
   button2(): void {
     this.selecteur = 2;
-    this.getAllergies();
   }
   buttonadd(): void {
     if (this.add === 0) {
@@ -89,38 +86,25 @@ export class AppComponent implements OnInit {
      }
   }
 
-  getPrescription() {
-
-  }
-
-  getAllergies(){
-
-  }
-  
-  initialisationPatient() {
-    this.getPatient().then(result => {
-      console.log(result);
-      this.patientTest.gender = result.gender;
-      this.patientTest.name = result.name[0].given + ' ' + result.name[0].family;
-      this.patientTest.naissance = new Date(result.birthDate);
-      this.dateFormat = this.patientTest.naissance.toString().slice(0, 15);
-      this.patientTest.identification = result.id;
-      this.patientTest.adresse = result.address[0].line + ' ' + result.address[0].postalCode + ' ' + result.address[0].city;
-    });
- }
-
-  initialisationListeAllergie() {
-    this.listeAllergie.push(new allergie('poissons', 'boutons', this.Id), new allergie('carottes', 'démangeaisons', this.Id));
-  }
-
   ngOnInit() {
-    this.initialisationPatient();
-    this.initialisationListeAllergie();
-    console.log("teeeeeeeest" + this.patientTest);
+    this.getPatient().then(result => {
+      this.patientTest = {
+        gender: result.gender,
+        name: result.name[0].given + ' ' + result.name[0].family,
+        naissance: new Date(result.birthDate), // require('dateformat'), // require('dateformat')(
+        identification: result.id,
+        adresse: result.address[0].line + ' ' + result.address[0].postalCode + ' ' + result.address[0].city,
+      };
+    });
+    this.dateFormat = this.patientTest.naissance.toString().slice(0, 15);
   }
 
   private getPatient(): Promise<any> {
     return this.http.get(this.server + 'patient/' + this.Id).toPromise().catch(this.handleError);
+  }
+
+  private getAllergies(): Promise<any> {
+    return this.http.get(this.server + 'allergy-intolerance/').toPromise().catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {
@@ -134,7 +118,7 @@ export class AppComponent implements OnInit {
       var obj = JSON.stringify({
         "resourceType": "AllergyIntolerance",
         "reaction": [
-          {
+          { ""
             "substance": {
               "coding": [
                 {
