@@ -24,85 +24,51 @@
 </div>
 <!--<pre>{{patientTest|json}}</pre> -->
 <br>
-<div *ngIf="selecteur==0 && patientTest">
-  <div>Bienvenue sur votre espace personel</div>
-  <br>
-  <div>informations personnelles :</div>
-  <table>
-    <tr>
-      <td>Nom</td>
-      <td>{{patientTest.name}}</td>
-    </tr>
-    <tr>
-      <td>Sexe</td>
-      <td>{{patientTest.gender}}</td>
-    </tr>
-    <tr>
-      <td>Date de naissance</td>
-      <td>{{patientTest.naissance}}</td>
-    </tr>
-    <tr>
-      <td>adresse</td>
-      <td>{{patientTest.adresse}}</td>
-    </tr>
-  </table>
+<div *ngIf="selecteur==0">
+<div id='messageAccueil'>Bienvenue sur votre espace personel</div>
+<br>
+<div id='sousTitre'>Vos informations personnelles :</div>
+<table id='dataTable' width:1000>
+  <tr><td width:400>Nom</td><td width:600>{{patientTest.name}}</td></tr>
+  <tr><td>Sexe</td><td>{{patientTest.gender}}</td></tr>
+  <tr><td>Date de naissance</td><td>{{patientTest.naissance}}</td></tr>
+  <tr><td>adresse</td><td>{{patientTest.adresse}}</td></tr>
+</table>
 
-  <table>
-    <tr>
-      <td>
-        <div (click)="button1()">Prescription</div>
-      </td>
-      <td>
-        <div (click)="button2()">Allergie</div>
-      </td>
-    </tr>
-  </table>
+<div id='boutons'><div (click)="button1()" class='boutontab' id='boutontab1'>Prescription</div><div (click)="button2()" class='boutontab'>Allergie</div></div>
 </div>
-<div *ngIf="selecteur==1">
-  <div>Prescription</div>
-  <br>
-  <p *ngFor="let p of listePrescription" (click)="afficher(p)">{{p.name}}</p>
-  <br>
+<div *ngIf="selecteur==1"><div id='sousTitre'>Prescription</div>
+<br>
+<p *ngFor="let p of listePrescription" (click)="afficher(p)">{{p.name}}</p>
+<br>
 </div>
-<div *ngIf="selecteur==2">
-  <div>Allergies</div>
-  <br>
-  <table>
-    <tr *ngFor="let allergie of listeAllergie">
-      <td>{{allergie.name}}</td>
-      <td>{{allergie.symptome}}</td>
-    </tr>
-  </table>
-  <br>
-  <button *ngIf="add==0 " (click)="buttonadd()">ajout allergie</button>
-  <table *ngIf="add==1 ">
+<div *ngIf="selecteur==2"><div id='sousTitre'>Allergies</div>
+<br>
+<table id='dataTable'>
+<tr *ngFor="let allergie of listeAllergie"><td>{{allergie.substance}}</td><td>{{allergie.manifestation}}</td></tr>
+</table>
+<br>
+<p *ngIf="add==0 " (click)="buttonadd()" id='bouton'>ajout allergie</p>
+<table *ngIf="add==1 ">
 
-    <tr>
-      <td>substance</td>
-      <td>symptome</td>
-    </tr>
-    <tr>
-      <td><input id="subst" type="text" [(ngModel)]="subst"></td>
-      <td><input id="sympt" type="text" [(ngModel)]="sympt"></td>
-    </tr>
-    <tr>
-      <td *ngIf="errorSubst">veuillez renseigner la substance</td>
-      <td *ngIf="errorSympt">veuillez renseigner les symptomes</td>
-    </tr>
-  </table>
-  <br *ngIf="errorSubst!=1 || errorSympt!=1">
-  <button *ngIf="add==1 " (click)="ajouterAllergie()">confirmer</button>
-  <br *ngIf="add==1 ">
+  <tr ><td>substance</td><td>symptome</td></tr>
+  <tr><td><input id="subst" type="text" [(ngModel)]="subst"></td>
+    <td><input id="sympt" type="text" [(ngModel)]="sympt"></td></tr>
+    <tr><td *ngIf="errorSubst" id='erreur'>veuillez renseigner la substance</td><td *ngIf="errorSympt" id='erreur'>veuillez renseigner les symptomes</td></tr>
+</table>
+<br *ngIf="errorSubst!=1 && errorSympt!=1">
+<p *ngIf="add==1 " (click)="ajouterAllergie()" id='bouton'>confirmer</p>
+<br *ngIf="add==1 ">
 </div>
 <div *ngIf="selecteur==4">
   <div>{{prescriptionafficher.name}}</div>
   <div>{{prescriptionafficher.medecin}}</div>
   <div>{{prescriptionafficher.tarif}}</div>
   <br>
-  <button (click)="button1()">retour prescription</button>
+  <p (click)="button1()" id='bouton'>retour prescription</p>
 </div>
 <br>
-<button (click)="button0()" *ngIf="selecteur!=0">retour</button>
+<p (click)="button0()" *ngIf="selecteur!=0" id='bouton'>retour</p>
 <!--<pre>{{patientTest|json}}</pre>-->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->

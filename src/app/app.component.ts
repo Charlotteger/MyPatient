@@ -26,6 +26,8 @@ export class AppComponent implements OnInit {
   subst = '';
 
   patientTest: Patient;
+  Id = '5d80aa2832364000151f8ad3';
+  newAllergie: allergie;
 
   listeAllergie: allergie[] = [
   ];
@@ -55,8 +57,8 @@ export class AppComponent implements OnInit {
     this.selecteur = 4;
   }
   ajouterAllergie() {
-    console.log(this.sympt);
-    console.log(this.subst);
+    //console.log(this.sympt);
+    //console.log(this.subst);
     if (this.subst === '') {
       this.errorSubst = true;
     } else {
@@ -69,8 +71,13 @@ export class AppComponent implements OnInit {
     }
     if (!this.errorSympt && !this.errorSubst) {
       this.add = 0;
-      //postAllergie(this.sympt, this.subst );
-    }
+      this.newAllergie = {
+        substance: this.sympt, manifestation: this.sympt, idPatient: this.Id
+      };
+      this.postAllergie(this.newAllergie);
+      this.sympt = '' ;
+      this.subst = '' ;
+     }
   }
 
   ngOnInit() {
@@ -83,10 +90,10 @@ export class AppComponent implements OnInit {
         adresse: result.address[0].line + ' ' + result.address[0].postalCode + ' ' + result.address[0].city,
       };
     });
-  }  
+  }
 
   private getPatient(): Promise<any> {
-    return this.http.get(this.server + 'patient/5d80aa2832364000151f8ad3').toPromise().catch(this.handleError);
+    return this.http.get(this.server + 'patient/' + this.Id).toPromise().catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {
