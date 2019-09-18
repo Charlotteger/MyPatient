@@ -108,6 +108,7 @@ export class AppComponent implements OnInit {
   }
 
   private postAllergie(newAllergie: allergie) {
+    console.log(newAllergie);
     if (newAllergie != null) {
       var obj = JSON.stringify({
         "resourceType": "AllergyIntolerance",
@@ -136,7 +137,7 @@ export class AppComponent implements OnInit {
           }
         ],
         "patient": {
-          "reference": newAllergie.idPatient
+          "reference": "Patient/" + newAllergie.idPatient
         }
       });
       console.log(obj);
