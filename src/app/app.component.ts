@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Patient } from 'src/app/classes/Patient';
 import { allergie } from './classes/Allergie';
 import { prescription } from './classes/Prescription';
@@ -24,6 +24,12 @@ export class AppComponent implements OnInit {
   errorSubst = false;
   sympt = '';
   subst = '';
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': 'mon-jeton'
+    })
+  };
 
   patientTest: Patient;
   Id = '5d80aa2832364000151f8ad3';
@@ -102,9 +108,7 @@ export class AppComponent implements OnInit {
   }
 
   private postAllergie(newAllergie: allergie) {
-    if (newAllergie != null)
-      this.listeAllergie.push(newAllergie);
-    this.listeAllergie.forEach(element => {
+    if (newAllergie != null) {
       var obj = JSON.stringify({
         "resourceType": "AllergyIntolerance",
         "reaction": [
@@ -113,8 +117,8 @@ export class AppComponent implements OnInit {
               "coding": [
                 {
                   "system": "https://fr.wikipedia.org",
-                  "code": "1160593",
-                  "display": element.substance
+                  "code": "1000" + Math.floor(Math.random() * 1000),
+                  "display": newAllergie.substance
                 }
               ]
             },
@@ -123,8 +127,8 @@ export class AppComponent implements OnInit {
                 "coding": [
                   {
                     "system": "https://fr.wikipedia.org",
-                    "code": "39579001",
-                    "display": element.manifestation
+                    "code": "1000" + Math.floor(Math.random() * 1000),
+                    "display": newAllergie.manifestation
                   }
                 ]
               }
@@ -132,12 +136,12 @@ export class AppComponent implements OnInit {
           }
         ],
         "patient": {
-          "reference": element.idPatient
+          "reference": newAllergie.idPatient
         }
       });
       console.log(obj);
-    });
+      this.http.post(this.server + "allergy-intolerance", obj, this.httpOptions).toPromise().catch(this.handleError);
+    }
   }
-  //JSON.stringify({})
 }
 
